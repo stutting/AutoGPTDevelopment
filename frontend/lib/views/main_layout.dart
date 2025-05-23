@@ -8,6 +8,7 @@ import 'package:auto_gpt_flutter_client/views/skill_tree/skill_tree_view.dart';
 import 'package:auto_gpt_flutter_client/views/task/task_view.dart';
 import 'package:auto_gpt_flutter_client/views/chat/chat_view.dart';
 import 'package:auto_gpt_flutter_client/views/task_queue/task_queue_view.dart';
+import 'package:auto_gpt_flutter_client/views/game/game_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -38,9 +39,10 @@ class MainLayout extends StatelessWidget {
     // Calculate remaining width after subtracting the width of the SideBarView
     double remainingWidth = width - sideBarWidth;
 
-    // Declare variables to hold the widths of SkillTreeView, TestQueueView, and ChatView
+    // Declare variables to hold the widths of SkillTreeView, TestQueueView, GameView, and ChatView
     double skillTreeViewWidth = 0;
     double testQueueViewWidth = 0;
+    double gameViewWidth = 0;
     double chatViewWidth = 0;
 
     if (width > 800) {
@@ -84,6 +86,11 @@ class MainLayout extends StatelessWidget {
                             child: ChatView(viewModel: chatViewModel)),
                       ],
                     );
+                  } else if (value == 'GameView') {
+                    skillTreeViewModel.resetState();
+                    gameViewWidth = remainingWidth;
+                    return SizedBox(
+                        width: gameViewWidth, child: const GameView());
                   } else {
                     if (skillTreeViewModel.selectedNode != null) {
                       // If TaskQueueView should be displayed
@@ -132,6 +139,10 @@ class MainLayout extends StatelessWidget {
               icon: Icon(CupertinoIcons.chat_bubble),
               label: 'Chat',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.game_controller),
+              label: 'Game',
+            ),
           ],
         ),
         tabBuilder: (BuildContext context, int index) {
@@ -149,6 +160,13 @@ class MainLayout extends StatelessWidget {
               returnValue = CupertinoTabView(builder: (context) {
                 return CupertinoPageScaffold(
                   child: SafeArea(child: ChatView(viewModel: chatViewModel)),
+                );
+              });
+              break;
+            case 2:
+              returnValue = CupertinoTabView(builder: (context) {
+                return const CupertinoPageScaffold(
+                  child: SafeArea(child: GameView()),
                 );
               });
               break;
