@@ -44,6 +44,15 @@ class SideBarView extends StatelessWidget {
                             ? null
                             : () => selectedViewNotifier.value = 'TaskView',
                       ),
+                      IconButton(
+                        splashRadius: 0.1,
+                        color: selectedView == 'GameView'
+                            ? Colors.blue
+                            : Colors.black,
+                        icon: const Icon(Icons.sports_esports),
+                        onPressed: () =>
+                            selectedViewNotifier.value = 'GameView',
+                      ),
                       if (Provider.of<SettingsViewModel>(context, listen: true)
                           .isDeveloperModeEnabled)
                         IconButton(
